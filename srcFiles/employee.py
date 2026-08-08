@@ -1,19 +1,34 @@
 from srcFiles.person import Person
 
+
 class Employee(Person):
-        def __init__(self, firstName, lastName, personalID, employeeID):
-                self.__employeeID = employeeID
-                super().__init__(firstName, lastName, personalID)
-                
-        #getters
-        def getEmployeeID(self):
-                return self.__employeeID
-        
-        #setters
-        def setEmployeeID(self, employeeID):
-                self.__employeeID = employeeID
-                
-        #methods 
-        def toString(self):
-                return (super().toString() + " " + str(self.getEmployeeID()))
+    def __init__(self, firstName, lastName, personalID, employeeID, grade=None, salary=None):
+        self.__employeeID = employeeID
+        self.__grade = grade
+        self.__salary = salary
+        super().__init__(firstName, lastName, personalID)
+
+    # getters
+    def getEmployeeID(self):
+        return self.__employeeID
+
+    def getGrade(self):
+        return self.__grade
+
+    def getSalary(self):
+        return self.__salary
+
+    # setters
+    def setEmployeeID(self, employeeID):
+        self.__employeeID = employeeID
+
+    def setGrade(self, grade):
+        self.__grade = grade
+
+    def setSalary(self, salary):
+        self.__salary = salary
+
+    # methods
+    def toString(self):
+        return super().toString() + " " + str(self.getEmployeeID())
 
