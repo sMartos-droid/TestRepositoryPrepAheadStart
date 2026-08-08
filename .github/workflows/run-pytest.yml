@@ -1,8 +1,5 @@
 name: Run Pytest
-
-on:
-  push:
-
+on: [push]
 jobs:
   test:
     name: Run tests with pytest
@@ -11,7 +8,9 @@ jobs:
     steps:
       - name: Display event information  
         run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: Display runner information
         run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: Display repository information
         run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
 
       - name: Check out repository
