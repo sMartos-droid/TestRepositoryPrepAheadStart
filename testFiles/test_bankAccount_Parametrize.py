@@ -99,7 +99,7 @@ def test_transferFundsTo(testInput, requestedMoney):
                           ])
 def test_transferFundsTo_negative(testInput, requestedMoney):
     targetBbankAccount = BankAccount(10,0)
-    with pytest.raises(ValueError, match = ""invalid amount, it should be > 0€"):
+    with pytest.raises(ValueError, match = "invalid amount, it should be > 0€"):
         testInput.transferFundsTo(targetBbankAccount, requestedMoney)
 
 
