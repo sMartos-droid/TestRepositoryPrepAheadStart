@@ -18,7 +18,7 @@ def test_getEmployeeID(testInput, expectedEmployeeID):
 @pytest.mark.parametrize(
     "testInput, expectedGrade",
     [
-        (Employee("John", "Doe", 78035946, 1300, "junior", 35000), "juni"),
+        (Employee("John", "Doe", 78035946, 1300, "junior", 35000), "junior"),
         (Employee("Jane", "Smith", 78035947, 1, "senior", 60000), "senior"),
         (Employee("Bob", "Johnson", 78035948, 2, "manager", 70000), "manager"),
         (Employee("Allan", "Dunn", 78035950, 3, "director", 80000), "director"),
