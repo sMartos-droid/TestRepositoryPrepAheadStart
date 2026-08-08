@@ -91,7 +91,7 @@ def test_transferFundsTo(testInput, requestedMoney):
     testInput.transferFundsTo(targetBbankAccount, requestedMoney)
     assert targetBbankAccount.getBalance() == requestedMoney
 #transfer negative funds
-'''
+
 @pytest.mark.parametrize("testInput, requestedMoney",
                          [(BankAccount(1,1300), -1300),
                           (BankAccount(0,0), -1),
@@ -99,6 +99,7 @@ def test_transferFundsTo(testInput, requestedMoney):
                           ])
 def test_transferFundsTo_negative(testInput, requestedMoney):
     targetBbankAccount = BankAccount(10,0)
-    testInput.transferFundsTo(targetBbankAccount, requestedMoney)
-'''
+    with pytest.raises(ValueError, match = "invalid amount, it is < 0€"):
+        testInput.transferFundsTo(targetBbankAccount, requestedMoney)
+
 
