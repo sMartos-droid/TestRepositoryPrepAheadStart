@@ -65,6 +65,8 @@ class BankAccount:
             raise TypeError("target bank account not defined")
         if funds < 0:
             raise ValueError("invalid amount, it should be > 0€")
+        if funds > self.__balance: 
+            raise ValueError("invalid amount, it is > than the available balance")      
         self.withDraw(funds)
         targetBankAccount.addMoney(funds)
 
