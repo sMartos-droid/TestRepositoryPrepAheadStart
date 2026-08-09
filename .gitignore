@@ -1,2 +1,3 @@
-*.pvc
+*.pyc
 .venv_*/
+**/__pycache__/
