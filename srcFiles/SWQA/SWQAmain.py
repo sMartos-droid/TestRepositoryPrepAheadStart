@@ -12,8 +12,10 @@ testResultsLastIteration = TestResults("ARRAKIS", "SW.6", "SW.1.1.5")
 testResultsLastIteration.set_result(13245, "SW6-[StartUp](powerConsumption)", "BLOCKED", 135, "re-validation of issue ID: 13543")
 testResultsLastIteration.set_result(13246, "SW6-[Actuation](ActiveDischarge)", "PASSED", 1520, "N/A")
 testResultsLastIteration.set_result(13247, "SW6-[Acquisition](HvVoltage)", "PASSED", 920, "new test content added to the test suite")
+testResultsSingleItem = testResultsLastIteration.fetchTestResults(13247)
+print("Test result for test ID 13247:", testResultsSingleItem)
+print("Test result for test case name: SW6-[StartUp](powerConsumption):", testResultsSingleItem)
 testResultsLastIteration.connection_close()
-print("Path of the results database:", testResultsLastIteration.get_database_path())
 
 #adding the test results for the iteration SW1.1.5 of the SW6 release
 testResultsLastIteration = TestResults("ARRAKIS", "SW.6", "SW.1.2.0")

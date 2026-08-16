@@ -16,6 +16,7 @@ using the pattern ``projectID-testLevel.sqlite``.
 import os
 import sqlite3
 from pathlib import Path
+from functools import singledispatchmethod
 
 
 class TestResults:
@@ -125,6 +126,31 @@ class TestResults:
         )
         cursor.execute(querry, (test_id, test_name, test_result, test_time_ms, comments))
         self.__connection.commit()
+    @singledispatchmethod
+    def fetchTestResults(self, testCaseNameOrId):
+        """Fetch test results for a specific test case.
+
+        Args:
+            testCaseName (str): The name of the test case.
+            testCaseId  (int): The unique identifier of the test case.
+        Returns:
+            list of tuples: Each tuple contains (test_id, test_name, test_result, test_time_ms, comments).
+        """
+        raise TypeError(f"Unsupported type: {type(testCaseNameOrId)}. Expected str or int.")
+    @fetchTestResults.register
+    def _(self, testCaseName: str):
+        cursor = self.__connection.cursor()
+        table_name = self._quoted_table_name()
+        query = f"SELECT * FROM {table_name} WHERE test_name = ?"
+        cursor.execute(query, (testCaseName,))
+        return cursor.fetchone()
+    @fetchTestResults.register
+    def _(self, testCaseId: int):
+        cursor = self.__connection.cursor()
+        table_name = self._quoted_table_name()
+        query = f"SELECT * FROM {table_name} WHERE test_id = ?"
+        cursor.execute(query, (testCaseId,))
+        return cursor.fetchone()
 
     def connection_close(self):
         """Close the database connection."""
