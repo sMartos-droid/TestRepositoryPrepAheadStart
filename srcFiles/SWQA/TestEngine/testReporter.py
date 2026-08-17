@@ -19,7 +19,7 @@ from pathlib import Path
 from functools import singledispatchmethod
 
 
-class TestResults:
+class TestReporter:
     """Provide persistence for software QA test results."""
 
     def __init__(self, projectID, testLevel, SWID):
@@ -103,7 +103,7 @@ class TestResults:
             str: Path to the SQLite file.
         """
         return str(self.__db_path)
-    def set_result(self, test_id, test_name, test_result, test_time_ms, comments=None):
+    def setResult(self, test_id, test_name, test_result, test_time_ms, comments=None):
         """Insert or update a test result in the database.
 
         Args:
@@ -128,8 +128,8 @@ class TestResults:
         self.__connection.commit()
     @singledispatchmethod
     def fetchTestResults(self, testCaseNameOrId):
-        """Fetch test results for a specific test case.
-
+        """Fetch test results for a specific test case. by ID o test case name.
+            therefore the singledispatch method is used to handle both cases.
         Args:
             testCaseName (str): The name of the test case.
             testCaseId  (int): The unique identifier of the test case.
@@ -137,6 +137,7 @@ class TestResults:
             list of tuples: Each tuple contains (test_id, test_name, test_result, test_time_ms, comments).
         """
         raise TypeError(f"Unsupported type: {type(testCaseNameOrId)}. Expected str or int.")
+
     @fetchTestResults.register
     def _(self, testCaseName: str):
         cursor = self.__connection.cursor()
@@ -144,6 +145,7 @@ class TestResults:
         query = f"SELECT * FROM {table_name} WHERE test_name = ?"
         cursor.execute(query, (testCaseName,))
         return cursor.fetchone()
+
     @fetchTestResults.register
     def _(self, testCaseId: int):
         cursor = self.__connection.cursor()
