@@ -1,26 +1,27 @@
 from abc import abstractmethod
-"""
-This class is intended to be the base class for all the test cases.
-Inner fields:
-    __testCaseName: The name of the test case.
-    __testCaseID: The ID of the test case.
-    __testCaseDescription: The description of the test case.
-    __numberOfSteps: The number of steps in the test case.
-Methods:
-    getTestCaseName: Returns the name of the test case.
-    getTestCaseID: Returns the ID of the test case.
-    getTestCaseDescription: Returns the description of the test case.
-    getNumberOfSteps: Returns the number of steps in the test case.
-    setTestCaseName: Sets the name of the test case.
-    setTestCaseID: Sets the ID of the test case.
-    setTestCaseDescription: Sets the description of the test case.
-    setNumberOfSteps: Sets the number of steps in the test case.
-    setupTestCase: Abstract method to setup particular conditions for the test case. This method is called before the test case execution.
-    executeTestCase: Abstract method to execute the test case.
-    cleanupTestCase: Abstract method to cleanup after the test case execution.
-""" 
 
 class TestCaseBase:
+    """
+    This class is intended to be the base class for all the test cases.
+    Inner fields:
+        __testCaseName: The name of the test case.
+        __testCaseID: The ID of the test case.
+        __tesTCaseDescription: The description of the test case.
+        __numberOfSteps: The number of steps in the test case.
+    Methods:
+        getTestCaseName: Returns the name of the test case.
+        getTestCaseID: Returns the ID of the test case.
+        getTestCaseDescription: Returns the description of the test case.
+        getNumberOfSteps: Returns the number of steps in the test case.
+        setTestCaseName: Sets the name of the test case.
+        setTestCaseID: Sets the ID of the test case.
+        setTestCaseDescription: Sets the description of the test case.
+        setNumberOfSteps: Sets the number of steps in the test case.
+        setupTestCase: Abstract method to setup particular conditions for the test case. This method is called before the test case execution.
+        executeTestCase: Abstract method to execute the test case.
+        cleanupTestCase: Abstract method to cleanup after the test case execution.
+    """ 
+
     def __init__(self, testCaseName, testCaseID, testCaseDescription, numberOfSteps):
         #inner fields (priavate with __)
         self.__testCaseName = testCaseName
