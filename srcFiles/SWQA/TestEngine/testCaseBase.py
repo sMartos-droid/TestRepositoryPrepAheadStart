@@ -1,5 +1,5 @@
 from abc import abstractmethod
-
+import time
 class TestCaseBase:
     """
     This class is intended to be the base class for all the test cases.
@@ -28,6 +28,10 @@ class TestCaseBase:
         self.__testCaseID = testCaseID
         self.__testCaseDescription = testCaseDescription
         self.__numberOfSteps = numberOfSteps
+        self.__testTimeTimer = time
+        self.__starTime = 0
+        self.__endTime = 0
+    #getters
     def getTestCaseName(self):
         return self.__testCaseName  
     def getTestCaseID(self):
@@ -36,6 +40,7 @@ class TestCaseBase:
         return self.__testCaseDescription
     def getNumberOfSteps(self):
         return self.__numberOfSteps
+    #setters
     def setTestCaseName(self, name):
         self.__testCaseName = name
     def setTestCaseID(self, idNumber):
@@ -53,6 +58,7 @@ class TestCaseBase:
     #(bool): true if the execution was successful, false otherwise
     @abstractmethod
     def setupTestCase(self):
+        self.__starTime = self.__testTimeTimer.perf_counter()
         pass
     #Methods
         #This method is called to execute the test case.
@@ -66,6 +72,10 @@ class TestCaseBase:
         pass
     @abstractmethod
     def cleanupTestCase(self):
+        self.__endTime = self.__testTimeTimer.perf_counter()
         pass
     def toString(self):
         return str(self.getTestCaseName() + " " + str(self.getTestCaseID()) + " " + self.getTestCaseDescription())
+    def getTestTime(self):
+        testTime = self.__endTime - self.__starTime
+        return testTime 
