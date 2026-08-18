@@ -1,11 +1,14 @@
 import sys
 from pathlib import Path
-import time
-# Agregar el directorio padre al path
+
+# Agregar el directorio padre al path antes de importar TestEngine
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+import time
 from TestEngine.testCaseBase import TestCaseBase
 from TestEngine.testReporter import TestReporter
+from TestEngine.testReporter import TestStatus
+
 
 class TC_ID26345(TestCaseBase):
     def __init__(self):
@@ -29,7 +32,8 @@ class TC_ID26345(TestCaseBase):
         print("Cleaning up the test case: " + self.getTestCaseName() + " executing the cleanupTestCase() step")
         #cleanup after the test case execution
         #Report of test results
-        self.testReporter.setResult(self.getTestCaseID(), self.getTestCaseName(), "PASSED", self.getTestTime(), "LV current consumption at start up is inside the expected range")
+        self.testReporter.setResult(self.getTestCaseID(), self.getTestCaseName(), TestStatus.PASSED, self.getTestTime(), "LV current consumption at start up is inside the expected range")
+        sys.path.insert(0, str(Path(__file__).parent.parent))
         #close the connection to the database
         self.testReporter.connection_close()
         return True

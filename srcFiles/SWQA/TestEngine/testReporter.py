@@ -17,7 +17,13 @@ import os
 import sqlite3
 from pathlib import Path
 from functools import singledispatchmethod
+from enum import Enum
 
+#inner class to report the test status
+class TestStatus(Enum):
+    PASSED = "PASSED"
+    FAILED = "FAILED"
+    BLOCKED = "BLOCKED"
 
 class TestReporter:
     """Provide persistence for software QA test results."""
@@ -30,13 +36,13 @@ class TestReporter:
             testLevel (str): Test level identifier, for example "SW.6".
             SWID (str): Software identifier, for example "SW.major.minor.patch".
         """
+        #inner members
         self.__projectID = projectID
         self.__testLevel = testLevel
         self.__SWID = SWID
         self.__db_name = f"{self.__projectID}-{self.__testLevel}.sqlite"
         self.__db_path = Path(self.__db_name)
         self.__connection = sqlite3.connect(self.__db_path)
-
         if os.path.exists(self.__db_path):
             print(
                 f"Database {self.__db_name} already exists. "
@@ -113,6 +119,8 @@ class TestReporter:
             test_time_ms (float): Time taken for the test in milliseconds.
             comments (str, optional): Additional comments or error details.
         """
+        if isinstance(test_result, Enum):
+            test_result = test_result.value
         cursor = self.__connection.cursor()
         table_name = self._quoted_table_name()
         querry = (
