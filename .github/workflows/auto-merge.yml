@@ -36,4 +36,5 @@ jobs:
           fi
           
           echo "Merging PR #$PR_NUMBER..."
-          gh pr merge "$PR_NUMBER" --squash --auto
+          gh pr merge "$PR_NUMBER" --squash 
+

@@ -1,3 +1,4 @@
+""" This class models a dog"""
 class Dog:
     def __init__(self, name, legs):
         #inner fields (priavate with __)
