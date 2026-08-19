@@ -8,6 +8,7 @@ def myMethod():
     time.sleep(3)
 
 @DecoratorsLib.iterateTwice
+@DecoratorsLib.debug
 def myPrintMessage(message):
     print(message)
     
