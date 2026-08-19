@@ -36,12 +36,13 @@ jobs:
             PR_NUMBER=$(gh pr list --state open --json number,headRefName --jq '.[] | select(.headRefName=="'"$PR_BRANCH"'") | .number' | head -n1 || true)
           fi
 
-          if [ -z "$PR_NUMBER" ]; then
-            echo "No open pull request found for branch '$PR_BRANCH'. Listing open PRs for debugging:"
-            gh pr list --state open --limit 50 --json number,title,headRefName,headRepositoryOwner || true
-            exit 0
+          # Intenta resolver conflictos automaticamente
+          if gh pr merge "$PR_NUMBER" --squash; then
+          echo "PR merged successfully"
+          else
+          echo "Merge failed, trying with --auto flag..."
+          gh pr merge "$PR_NUMBER" --squash --auto
           fi
-
           echo "Merging PR #$PR_NUMBER..."
           gh pr merge "$PR_NUMBER" --squash --repo "${GITHUB_REPOSITORY}"          
           echo "Merging PR #$PR_NUMBER..."
