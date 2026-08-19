@@ -20,21 +20,24 @@ jobs:
       - name: Automatically Merge PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # add the repo to the VM in order to operate on the PR_BRANCH
-          GH_REPO: ${{ github.repository }} 
-          # Safely fetch the branch name from the event context
+          GH_REPO: ${{ github.repository }}
           PR_BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: |
           echo "Finding pull request for branch: $PR_BRANCH"
           
-          # Find the PR number associated with the branch
-          PR_NUMBER=$(gh pr list --head "$PR_BRANCH" --json number --jq '.[0].number')
+          # 1. Inicializamos un git ficticio para que 'gh' no falle buscando la carpeta .git
+          git init -b main > /dev/null
           
-          if [ -z "$PR_NUMBER" ]; then
+          # 2. Buscamos el número de PR usando la API directamente (método ultra robusto)
+          PR_NUMBER=$(gh api repos/$GH_REPO/pulls \
+            -F head="${GH_REPO}:${PR_BRANCH}" \
+            -F state=open \
+            --jq '.[0].number')
+          
+          if [ -z "$PR_NUMBER" ] || [ "$PR_NUMBER" = "null" ]; then
             echo "No open pull request found for branch $PR_BRANCH."
             exit 0
           fi
           
           echo "Merging PR #$PR_NUMBER..."
-          # Merges the PR using the squash method (change to --merge or --rebase if preferred)
           gh pr merge "$PR_NUMBER" --squash --auto
