@@ -20,6 +20,8 @@ jobs:
       - name: Automatically Merge PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # add the repo to the VM in order to operate on the PR_BRANCH
+          GH_REPO: ${{ github.repository }} 
           # Safely fetch the branch name from the event context
           PR_BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: |
