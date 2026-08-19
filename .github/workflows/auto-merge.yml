@@ -1,0 +1,38 @@
+name: Auto-merge PR
+
+on:
+  workflow_run:
+    workflows: ["Run Pytest"] 
+    types:
+      - completed
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    # 2. Only run if the triggering workflow actually succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: Automatically Merge PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Safely fetch the branch name from the event context
+          PR_BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          echo "Finding pull request for branch: $PR_BRANCH"
+          
+          # Find the PR number associated with the branch
+          PR_NUMBER=$(gh pr list --head "$PR_BRANCH" --json number --jq '.[0].number')
+          
+          if [ -z "$PR_NUMBER" ]; then
+            echo "No open pull request found for branch $PR_BRANCH."
+            exit 0
+          fi
+          
+          echo "Merging PR #$PR_NUMBER..."
+          # Merges the PR using the squash method (change to --merge or --rebase if preferred)
+          gh pr merge "$PR_NUMBER" --squash --auto
