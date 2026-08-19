@@ -15,12 +15,14 @@ jobs:
     permissions:
       pull-requests: write
       contents: write
-
+      
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Automatically Merge PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Safely fetch the branch name from the event context
           PR_BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: |
           echo "Finding pull request for branch: $PR_BRANCH"
@@ -34,5 +36,4 @@ jobs:
           fi
           
           echo "Merging PR #$PR_NUMBER..."
-          # Merges the PR using the squash method (change to --merge or --rebase if preferred)
           gh pr merge "$PR_NUMBER" --squash --auto
