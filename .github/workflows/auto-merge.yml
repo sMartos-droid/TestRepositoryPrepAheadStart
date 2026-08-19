@@ -9,51 +9,31 @@ on:
 jobs:
   merge:
     runs-on: ubuntu-latest
+    # 2. Only run if the triggering workflow actually succeeded
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
     permissions:
       pull-requests: write
       contents: write
-
+      
     steps:
-      # ELIMINADO: Se quitó 'actions/checkout' para evitar el conflicto con el Git local
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Automatically Merge PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
           PR_BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: |
           echo "Finding pull request for branch: $PR_BRANCH"
           
-          # Buscamos el número de PR usando el filtro correcto de la API de GitHub
-          # Importante: El filtro 'head' requiere el formato "usuario-o-organizacion:nombre-rama"
-          OWNER=$(echo "$GH_REPO" | cut -d'/' -f1)
-          PR_NUMBER=$(gh api repos/$GH_REPO/pulls \
-            -F head="${OWNER}:${PR_BRANCH}" \
-            -F state=open \
-            --jq '.[0].number')
+          # Find the PR number associated with the branch
+          PR_NUMBER=$(gh pr list --head "$PR_BRANCH" --json number --jq '.[0].number')
           
-          if [ -z "$PR_NUMBER" ] || [ "$PR_NUMBER" = "null" ]; then
+          if [ -z "$PR_NUMBER" ]; then
             echo "No open pull request found for branch $PR_BRANCH."
             exit 0
           fi
           
-          echo "Found PR #$PR_NUMBER. Initializing auto-merge..."
-          
-          # Usamos la API de GraphQL a través del CLI para activar el auto-merge nativo.
-          # Esto evita que 'gh pr merge' intente leer configuraciones de Git locales.
-          PR_ID=$(gh api graphql -f query='
-            query($repo: String!, $owner: String!, $pr: Int!) {
-              repository(name: $repo, owner: $owner) {
-                pullRequest(number: $pr) { id }
-              }
-            }' -F repo="${GH_REPO#*/}" -F owner="$OWNER" -F pr=$PR_NUMBER --jq '.data.repository.pullRequest.id')
-
-          gh api graphql -f query='
-            mutation($id: ID!) {
-              enablePullRequestAutoMerge(input: { pullRequestId: $id, mergeMethod: SQUASH }) {
-                pullRequest { autoMergeRequest { enabledAt } }
-              }
-            }' -F id="$PR_ID"
-          
-          echo "Auto-merge successfully enabled for PR #$PR_NUMBER!"
+          echo "Merging PR #$PR_NUMBER..."
+          gh pr merge "$PR_NUMBER" --squash 
