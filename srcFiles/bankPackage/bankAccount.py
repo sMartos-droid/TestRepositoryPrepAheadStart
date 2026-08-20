@@ -9,6 +9,13 @@ class BankAccount:
         self.__accountID = accountId
         
     #getters
+    """
+    Returns the account´s balance
+        Parameters:
+            N/A
+        Returns:
+            (float): current account balance
+    """    
     def getBalance(self):
         return self.__balance
     def getAccountID(self):
