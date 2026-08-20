@@ -9,10 +9,30 @@ on:
 jobs:
   create-pull-request:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Debug git (opcional, para verificar refs)
+        run: |
+          echo "GITHUB_REF=$GITHUB_REF"
+          BRANCH=${GITHUB_REF#refs/heads/}
+          echo "Branch=$BRANCH"
+          git remote -v
+          git branch -a
+          git show-ref | sed -n '1,120p'
+
       - name: Create Pull Request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr create --fill || echo "PR already exists or nothing to do"
+          BRANCH=${GITHUB_REF#refs/heads/}
+          # Asegura que origin/main esté presente
+          git fetch origin main || true
+          # Crea PR especificando owner:branch para cubrir forks y evitar ambigüedades
+          gh pr create --base main --head "$GITHUB_REPOSITORY_OWNER:$BRANCH" --fill || echo "PR already exists or nothing to do"
