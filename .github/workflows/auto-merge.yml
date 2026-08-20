@@ -2,7 +2,7 @@ name: Auto-merge PR
 
 on:
   workflow_run:
-    workflows: ["Run Pytest"] 
+    workflows: ["Auto Open Pull Request"] 
     types:
       - completed
 
