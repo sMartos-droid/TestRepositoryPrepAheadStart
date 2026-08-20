@@ -26,6 +26,13 @@ class Dog:
         return self.__nrOflegs
         
     #setters
+    """
+    set the dog´s name
+        Parameters:
+            (str): dog´s name
+        Returns:
+            none
+    """
     def setName(self, name):
         self.__name = name
     def setNrOfLegs(self, legs):
