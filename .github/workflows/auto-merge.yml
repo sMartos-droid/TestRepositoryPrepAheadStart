@@ -5,6 +5,8 @@ on:
     workflows: ["02 - Auto Open Pull Request"] 
     types:
       - completed
+  pull_request:
+    types: [opened, reopened, labeled]
 
 jobs:
   merge:
