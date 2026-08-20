@@ -1,8 +1,8 @@
-name: Auto-merge PR
+name: 03 - Auto-merge PR
 
 on:
   workflow_run:
-    workflows: ["Auto Open Pull Request"] 
+    workflows: ["02 - Auto Open Pull Request"] 
     types:
       - completed
 

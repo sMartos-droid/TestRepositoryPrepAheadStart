@@ -1,8 +1,8 @@
-name: Auto Open Pull Request
+name: 02 - Auto Open Pull Request
 
 on:
   workflow_run:
-    workflows: ["Run Pytest"] 
+    workflows: ["01 - Run Pytest"] 
     types:
       - completed
 
