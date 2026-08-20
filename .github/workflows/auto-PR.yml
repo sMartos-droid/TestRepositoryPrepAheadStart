@@ -1,11 +1,10 @@
 name: Auto Open Pull Request
 
 on:
-  push:
-    # Triggers on every push, but ignores your default main/master branches to avoid loops
-    branches-ignore:
-      - main
-      - master
+  workflow_run:
+    workflows: ["Run Pytest"] 
+    types:
+      - completed
 
 jobs:
   create-pull-request:
