@@ -1,4 +1,4 @@
-name: Auto-merge PR
+name: 03 - Auto-merge PR
 
 on:
   workflow_run:
