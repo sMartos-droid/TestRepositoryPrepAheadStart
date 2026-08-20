@@ -18,6 +18,13 @@ class BankAccount:
     """    
     def getBalance(self):
         return self.__balance
+    """
+    Returns the account´s ID
+        Parameters:
+            N/A
+        Returns:
+            (int): with the account ID
+    """
     def getAccountID(self):
         return self.__accountID
         
