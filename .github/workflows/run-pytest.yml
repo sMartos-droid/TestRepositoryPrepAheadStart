@@ -1,4 +1,4 @@
-name: 01- Run Pytest
+name: 01 - Run Pytest
 on: [push]
 jobs:
   test:
