@@ -15,6 +15,13 @@ class Dog:
     """
     def getName(self):
         return self.__name
+    """
+    Returns the nr. of legs of the dog
+        Parameters:
+            N/A
+        Returns:
+            (str): dog´s name
+    """
     def getNrOfLegs(self):
         return self.__nrOflegs
         
