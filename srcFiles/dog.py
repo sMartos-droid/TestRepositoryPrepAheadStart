@@ -46,6 +46,13 @@ class Dog:
         self.__nrOflegs = legs
             
     #methods
+    """
+    make the dog speaks
+        Parameters:
+            None
+        Returns:
+            None
+    """
     def seak(self):
         print("guau gau")
         
