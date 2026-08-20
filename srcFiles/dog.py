@@ -35,6 +35,13 @@ class Dog:
     """
     def setName(self, name):
         self.__name = name
+    """
+    set the dog´s nr of legs
+        Parameters:
+            (int): dog´s nr. of legs
+        Returns:
+            none
+    """
     def setNrOfLegs(self, legs):
         self.__nrOflegs = legs
             
