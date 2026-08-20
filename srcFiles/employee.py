@@ -10,6 +10,13 @@ class Employee(Person):
                 super().__init__(firstName, lastName, personalID)
                 
         #getters
+        """
+        Returns the name of dog
+        Parameters:
+            None
+        Returns:
+            (int): employee´s ID Nr.
+        """
         def getEmployeeID(self):
                 return self.__employeeID
         
