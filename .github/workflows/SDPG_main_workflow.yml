@@ -1,7 +1,7 @@
 name: 01 - Run Pytest
-on: [push]
+on: [workflow_dispatch]
 jobs:
-  test:
+  pytestRegression:
     name: Run tests with pytest
     runs-on: ubuntu-latest
 
@@ -29,3 +29,7 @@ jobs:
       - name: Run pytest
         run: |
           python -m pytest testFiles
+  autoPR:
+    name: Generate a new PR
+    runs-on: ubuntu-latest
+
